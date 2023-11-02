@@ -56,7 +56,7 @@ namespace LevelEditorWebApp.Controllers {
             post.CreatedAt = DateTime.Now;
             post.Author = User.Identity.Name;
 
-            //get ZipFile from form and checl if it is valid file
+            //get ZipFile from form and check if it is valid file
             var file = Request.Form.Files["ZipFile"];
 
             post.ZipFileName = file.FileName;
@@ -85,6 +85,10 @@ namespace LevelEditorWebApp.Controllers {
         // GET: Posts/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id) {
+            if (!IsAuthorOfPost(id)) {
+                return Unauthorized();
+            }
+
             if (id == null || _context.Post == null) {
                 return NotFound();
             }
@@ -103,14 +107,47 @@ namespace LevelEditorWebApp.Controllers {
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("PostId,Title,Body,CreatedAt,ZipFile,Author,ZipFileName")] Post post) {
-            if (id != post.PostId) {
+            if (id != post.PostId) 
                 return NotFound();
+            if (!IsAuthorOfPost(id))
+                return Unauthorized();
+
+            post.CreatedAt = DateTime.Now;
+            post.Author = User.Identity.Name;
+
+            post.ZipFileName = _context.Post.Find(id).ZipFileName;
+            post.ZipFile = _context.Post.Find(id).ZipFile;
+
+            if (Request.Form.Files.Count != 0) {
+                //get ZipFile from form and check if it is valid file
+                var file = Request.Form.Files["ZipFile"];
+
+                post.ZipFileName = file.FileName;
+
+                post.ZipFile = new byte[file.Length];
+                using (var stream = new System.IO.MemoryStream()) {
+                    await file.CopyToAsync(stream);
+                    post.ZipFile = stream.ToArray();
+                }
+
+                if (!IsValidZipFile(file))
+                    return Problem("Invalid zip file. Please upload a zip file containing exactly one .lep file and a folder named \"maps\" containing only .lem files.");
             }
+
 
             if (ModelState.IsValid) {
                 try {
+                    _context.ChangeTracker.Clear();
+
                     _context.Update(post);
                     await _context.SaveChangesAsync();
+
+                    if (Request.Form.Files.Count != 0) {
+                        //delete old zip file in wwwroot/uploads
+                        System.IO.File.Delete("wwwroot/uploads/" + post.PostId + post.ZipFileName);
+                        //create zip file in wwwroot/uploads
+                        System.IO.File.WriteAllBytes("wwwroot/uploads/" + post.PostId + post.ZipFileName, post.ZipFile);
+                    }
                 }
                 catch (DbUpdateConcurrencyException) {
                     if (!PostExists(post.PostId)) {
@@ -132,6 +169,11 @@ namespace LevelEditorWebApp.Controllers {
                 return NotFound();
             }
 
+
+            if (!IsAuthorOfPost(id)) {
+                return Unauthorized();
+            }
+
             var post = await _context.Post
                 .FirstOrDefaultAsync(m => m.PostId == id);
             if (post == null) {
@@ -150,9 +192,14 @@ namespace LevelEditorWebApp.Controllers {
                 return Problem("Entity set 'ApplicationDbContext.Post'  is null.");
             }
             var post = await _context.Post.FindAsync(id);
+
+            //delete zip file in wwwroot/uploads
+            System.IO.File.Delete("wwwroot/uploads/" + post.PostId + post.ZipFileName);
+
             if (post != null) {
                 _context.Post.Remove(post);
             }
+
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -256,6 +303,12 @@ namespace LevelEditorWebApp.Controllers {
             System.IO.File.WriteAllBytes("wwwroot/uploads/" + post.PostId + post.ZipFileName, post.ZipFile);
 
             return File(post.ZipFile, "application/zip", post.ZipFileName);
+        }
+
+        //check if user is author of post
+        private bool IsAuthorOfPost(int? id) {
+            var post = _context.Post.Find(id);
+            return post.Author == User.Identity.Name;
         }
     }
 }
