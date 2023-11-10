@@ -1,8 +1,30 @@
-﻿@{
+﻿@using LevelEditorWebApp.Services;
+@{
     ViewData["Title"] = "Home Page";
 }
+@inject IPostsService postsService
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Recently updated posts</h1>
 </div>
+@if(ViewData["FiveNewestPosts"] != null) {
+    <div class="row">
+        <!-- how to display link toward each of the posts in ViewData["FiveNewestPosts"]? -->
+        @foreach (var post in ViewData["FiveNewestPosts"] as Post[])
+        {
+            <div class="col-sm-6">
+                <div class="card">
+                    <!-- Link towards post by post Id -->
+                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.PostId" class="text-decoration-none">
+                        <div class="card-body text-decoration-none text-black">
+                            <h5 class="card-title">@post.Title</h5>
+                            <p class="card-text"><b>Posted by:</b> @post.Author</p>
+                            <p class="card-text"><b>Last updated:</b> @post.CreatedAt.Value.ToString("dd.MM.yy")</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}
