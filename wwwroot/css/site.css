@@ -17,11 +17,11 @@ body {
   margin-bottom: 60px;
 }
 
-.card{
+.card-most-recent-posts{
     transition: 0.3s;
 }
 
-.card:hover {
+.card-most-recent-posts:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     transform: scale(1.1);
     transition: 0.3s;

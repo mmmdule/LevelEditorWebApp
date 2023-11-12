@@ -14,7 +14,7 @@
         @foreach (var post in ViewData["FiveNewestPosts"] as Post[])
         {
             <div class="">
-                    <div class="card h-100"  style="width: 16rem;">
+                    <div class="card card-most-recent-posts h-100"  style="width: 16rem;">
                     <!-- Link towards post by post Id -->
                     <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.PostId" class="text-decoration-none">
                         <div class="card-body text-decoration-none text-dark">

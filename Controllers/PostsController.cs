@@ -9,6 +9,7 @@ using LevelEditorWebApp.Data;
 using LevelEditorWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.IO.Compression;
+using LevelEditorWebApp.Classes;
 
 namespace LevelEditorWebApp.Controllers {
     public class PostsController : Controller {
@@ -36,7 +37,7 @@ namespace LevelEditorWebApp.Controllers {
             if (post == null) {
                 return NotFound();
             }
-
+            ViewData["Comments"] = _context.Comment.Where(c => c.PostId == id).ToList();
             return View(post);
         }
 
@@ -309,6 +310,33 @@ namespace LevelEditorWebApp.Controllers {
         private bool IsAuthorOfPost(int? id) {
             var post = _context.Post.Find(id);
             return post.Author == User.Identity.Name;
+        }
+
+        //add comment to post
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> AddComment([Bind("PostId,Content")] Comment comment) {
+            comment.CreatedAt = DateTime.Now;
+            comment.Username = User.Identity.Name;
+            comment.Content = Request.Form["Content"].ToString().Trim();
+            comment.PostId = int.Parse(Request.Form["PostId"]);
+            comment.UserId = _context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault().Id;
+
+
+            if (CommentIsValid(comment)) {
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), new { id = comment.PostId });
+            }
+            return RedirectToAction(nameof(Details), new { id = comment.PostId });
+        }
+
+        private bool CommentIsValid(Comment comment) {
+            //check if all comment fields are valid
+            return comment.Content is not null && comment.Content is not "" && 
+                   comment.Username is not "" && comment.Username is not null &&
+                   comment.UserId is not "" && comment.UserId is not null;
         }
     }
 }
