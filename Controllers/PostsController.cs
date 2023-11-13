@@ -10,13 +10,16 @@ using LevelEditorWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.IO.Compression;
 using LevelEditorWebApp.Classes;
+using LevelEditorWebApp.Services;
 
 namespace LevelEditorWebApp.Controllers {
     public class PostsController : Controller {
         private readonly ApplicationDbContext _context;
+        private readonly IVoteService _voteService;
 
-        public PostsController(ApplicationDbContext context) {
+        public PostsController(ApplicationDbContext context, IVoteService voteService) {
             _context = context;
+            _voteService = voteService;
         }
 
         // GET: Posts
@@ -37,6 +40,12 @@ namespace LevelEditorWebApp.Controllers {
             if (post == null) {
                 return NotFound();
             }
+
+            if(User.Identity.IsAuthenticated) {
+                ViewData["UserHasVoted"] = _voteService.UserHasVoted(id.GetValueOrDefault(), User.Identity.Name);
+                ViewData["UserVoteValue"] = _voteService.GetUserVoteValue(id.GetValueOrDefault(), User.Identity.Name);
+            }
+            ViewData["Votes"] = _voteService.GetPostVotes(id.GetValueOrDefault());
             ViewData["Comments"] = _context.Comment.Where(c => c.PostId == id).ToList();
             return View(post);
         }
@@ -337,6 +346,20 @@ namespace LevelEditorWebApp.Controllers {
             return comment.Content is not null && comment.Content is not "" && 
                    comment.Username is not "" && comment.Username is not null &&
                    comment.UserId is not "" && comment.UserId is not null;
+        }
+
+        //add vote to post
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Vote([Bind("PostId,Vote")] UserVoteInfo userVoteInfo) {
+            userVoteInfo.PostId = int.Parse(Request.Form["PostId"]);
+            userVoteInfo.Vote = int.Parse(Request.Form["Value"]);
+            userVoteInfo.UserName = User.Identity.Name;
+
+            await _voteService.AddOrUpdateVote(userVoteInfo.PostId, userVoteInfo.Vote, userVoteInfo.UserName);
+
+            return RedirectToAction(nameof(Details), new { id = userVoteInfo.PostId });
         }
     }
 }

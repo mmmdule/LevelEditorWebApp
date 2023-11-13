@@ -9,5 +9,6 @@ namespace LevelEditorWebApp.Data {
         }
         public DbSet<LevelEditorWebApp.Models.Post>? Post { get; set; }
         public DbSet<LevelEditorWebApp.Classes.Comment>? Comment { get; set; }
+        public DbSet<LevelEditorWebApp.Classes.UserVoteInfo>? UserVoteInfo { get; set; }
     }
 }
