@@ -1,4 +1,6 @@
-﻿using LevelEditorWebApp.Data;
+﻿using LevelEditorWebApp.Classes;
+using LevelEditorWebApp.Data;
+using LevelEditorWebApp.Models;
 
 namespace LevelEditorWebApp.Services {
     public class VoteService : IVoteService {
@@ -43,6 +45,22 @@ namespace LevelEditorWebApp.Services {
             //return 0 if user has not voted on it
             return UserHasVoted(postId, userName) ? 
                 applicationDbContext.UserVoteInfo.Where(u => u.PostId == postId && u.UserName == userName).FirstOrDefault().Vote : 0;
+        }
+
+        public Post[] GetBestRatedPostsAllTime(int count) {
+            //get all posts and sort them by votes
+
+            //get all posts
+            var posts = applicationDbContext.Post.ToList();
+
+            //sort them by votes
+            posts.Sort((x, y) => GetPostVotes(y.PostId).CompareTo(GetPostVotes(x.PostId)));
+
+            //remove posts with no votes or negative votes
+            posts.RemoveAll(p => GetPostVotes(p.PostId) <= 0);
+
+            //return the first count posts
+            return posts.Take(count).ToArray();
         }
     }
 }
