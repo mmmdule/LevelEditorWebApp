@@ -9,22 +9,26 @@ namespace LevelEditorWebApp.Controllers {
         //private readonly ILogger<HomeController> _logger;
         private readonly IPostsService _postsService;
         private readonly IVoteService _voteService;
+        private readonly IDownloadStatsService _downloadService;
 
         //public HomeController(ILogger<HomeController> logger) {
         //    _logger = logger;
         //}
 
-        public HomeController(IPostsService postsService, IVoteService voteService) {
+        public HomeController(IPostsService postsService, IVoteService voteService, IDownloadStatsService downloadService) {
             _postsService = postsService;
             _voteService = voteService;
+            _downloadService = downloadService;
         }
 
         public IActionResult Index() {
             //get 5 most recently updated posts and pass them to the view
             var posts = _postsService.GetLatestFiveUpdatedPosts();
             var bestPostsAllTime = _voteService.GetBestRatedPostsAllTime(5);
+            var mostDownloadedPostsAllTime = _downloadService.GetMostDownloadedPostsAllTime(5);
             ViewData["FiveNewestPosts"] = posts;
             ViewData["FiveBestAllTimePosts"] = bestPostsAllTime;
+            ViewData["FiveMostDownloadedPosts"] = mostDownloadedPostsAllTime;
             return View();
         }
 

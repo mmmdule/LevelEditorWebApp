@@ -16,10 +16,12 @@ namespace LevelEditorWebApp.Controllers {
     public class PostsController : Controller {
         private readonly ApplicationDbContext _context;
         private readonly IVoteService _voteService;
+        private readonly IDownloadStatsService _downloadStatsService;
 
-        public PostsController(ApplicationDbContext context, IVoteService voteService) {
+        public PostsController(ApplicationDbContext context, IVoteService voteService, IDownloadStatsService downloadStatsService) {
             _context = context;
             _voteService = voteService;
+            _downloadStatsService = downloadStatsService;
         }
 
         // GET: Posts
@@ -308,6 +310,9 @@ namespace LevelEditorWebApp.Controllers {
             if (post == null) {
                 return NotFound();
             }
+
+            //add download to database
+            await _downloadStatsService.AddDownload(post.PostId);
 
             //create zip file in wwwroot/uploads
             System.IO.File.WriteAllBytes("wwwroot/uploads/" + post.PostId + post.ZipFileName, post.ZipFile);

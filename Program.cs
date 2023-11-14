@@ -19,6 +19,7 @@ builder.Services.AddControllersWithViews();
 // Add user-defined services to the container.
 builder.Services.AddScoped<IPostsService, PostsService>();
 builder.Services.AddScoped<IVoteService, VoteService>();
+builder.Services.AddScoped<IDownloadStatsService, DownloadStatsService>();
 
 //add data context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
