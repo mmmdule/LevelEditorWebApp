@@ -351,12 +351,17 @@ namespace LevelEditorWebApp.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> EditComment([Bind("Id,Content")] Comment comment) {
+        public async Task<IActionResult> EditUserComment() {
+            int commentId = int.Parse(Request.Form["CommentId"]);
+            int postId = int.Parse(Request.Form["PostId"]);
+            Comment comment = await _commentService.GetCommentById(commentId);
+
             comment.CreatedAt = DateTime.Now;
-            comment.Username = User.Identity.Name;
             comment.Content = Request.Form["Content"].ToString().Trim();
-            comment.PostId = int.Parse(Request.Form["PostId"]);
-            comment.UserId = _context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault().Id;
+
+            if (User.Identity.Name != comment.Username) {
+                return Unauthorized();
+            }
 
             if (_commentService.CommentIsValid(comment)) {
                 await _commentService.UpdateComment(comment);
@@ -367,7 +372,7 @@ namespace LevelEditorWebApp.Controllers {
         }
 
         //delete comment
-        // POST: Posts/DeleteComment/5
+        // POST: Posts/DeleteUserComment/
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]

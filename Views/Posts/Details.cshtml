@@ -124,7 +124,16 @@
                         @if (Context.User.Identity.Name is not null && Context.User.Identity.Name.Equals(comment.Username)) {
 
                             <p class="card-footer">
-                                <!-- Button trigger modal -->
+                                <!-- Button trigger edit modal -->
+                                <button type="button" class="btn btn-warning" 
+                                        data-bs-toggle="modal" data-bs-target="#editModal"
+                                        data-bs-commentId="@comment.Id" data-bs-commentPostId="@comment.PostId"
+                                        data-bs-commentContent="@comment.Content">   
+                                    <i class="fa-solid fa-pen" style="color: #000000;"></i>
+                                    Edit
+                                </button>
+
+                                <!-- Button trigger delete modal -->
                                 <!-- '#' because target id is used as data-bs-target -->
                                 <button type="button" class="btn btn-danger" 
                                         data-bs-toggle="modal" data-bs-target="#deleteModal"
@@ -141,7 +150,7 @@
     }
 </div>
 
-<!-- Modal -->
+<!-- DELETE Modal -->
     <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -166,12 +175,39 @@
     </div>
 </div>
 
+<!-- EDIT Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editModal">Edit Comment</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form asp-action="EditUserComment" method="post" id="editForm">
+          <div class="modal-body">
+              <div class="mb-3">
+                <input type="hidden" name="CommentId" value="" id="editCommentId"/>
+                <input type="hidden" name="PostId" value="" id="editCommentPostId"/>
+                <label for="message-text" class="col-form-label">Comment:</label>
+                <textarea form="editForm" required name="Content" class="form-control" id="comment-text">
+                </textarea>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Confirm</button>
+          </div>
+     </form>
+    </div>
+  </div>
+</div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         var deleteModal = document.getElementById('deleteModal')
         deleteModal.addEventListener('show.bs.modal', function (event) {
-            // Button that triggered the modal
+            // Button that triggered the the show modal event
             let button = event.relatedTarget
 
             // Extract info from data-bs-* attributes
@@ -180,6 +216,21 @@
 
             document.getElementById('deleteCommentId').value = commentId;
             document.getElementById('deleteCommentPostId').value = postId;
+        })
+
+        var editModal = document.getElementById('editModal')
+        editModal.addEventListener('show.bs.modal', function (event) {
+            // Button that triggered the show modal event
+            let button = event.relatedTarget
+
+            // Extract info from data-bs-* attributes
+            let commentId = button.getAttribute('data-bs-commentId')
+            let postId = button.getAttribute('data-bs-commentPostId')
+            let commentContent = button.getAttribute('data-bs-commentContent')
+
+            document.getElementById('editCommentId').value = commentId;
+            document.getElementById('editCommentPostId').value = postId;
+            document.getElementById('comment-text').value = commentContent;
         })
     </script>
 }
