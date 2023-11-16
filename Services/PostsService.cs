@@ -39,8 +39,8 @@ namespace LevelEditorWebApp.Services {
             return applicationDbContext.Post.ToListAsync();
         }
 
-        public Post[] GetPostsByUser(string username) {
-            return applicationDbContext.Post.Where(post => post.Author == username).ToArray();
+        public Task<Post[]> GetPostsByUser(string username) {
+            return applicationDbContext.Post.Where(post => post.Author == username).ToArrayAsync();
         }
 
         //check if post belongs to author

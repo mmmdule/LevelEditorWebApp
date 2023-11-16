@@ -16,7 +16,7 @@ namespace LevelEditorWebApp.Services {
 
         public Task<List<Post>> GetAllPosts();
 
-        public Post[] GetPostsByUser(string username);
+        public Task<Post[]> GetPostsByUser(string username);
 
         //check if post belongs to author
         public bool IsPostByAuthor(string username, int postId);

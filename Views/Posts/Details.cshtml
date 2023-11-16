@@ -121,6 +121,45 @@
                         <h5 class="card-title">@comment.Username</h5>
                         <p class="card-text">@comment.Content</p>
                         <p class="card-text"><small class="text-muted">@comment.CreatedAt</small></p>
+                        @if (Context.User.Identity.Name is not null && Context.User.Identity.Name.Equals(comment.Username)) {
+
+                            <p class="card-footer">
+                                <!-- Button trigger modal -->
+                                @{string modalName = "deleteModal" + comment.Id; }
+                                <!-- '#' because target id is used as data-bs-target -->
+                                <button type="button" class="btn btn-danger" 
+                                        data-bs-toggle="modal" data-bs-target="#@modalName">
+                                    <i class="fa-solid fa-trash" style="color: #ffffff;"></i>
+                                    Delete
+                                </button>
+
+                                <!-- Modal -->
+                                    <div class="modal fade" id="@modalName" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete comment</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to delete your comment?
+                                            </div>
+                                                <form asp-action="DeleteUserComment" method="post">
+                                                <input type="hidden" name="CommentId" value="@comment.Id" />
+                                                <input type="hidden" name="PostId" value="@comment.PostId" />
+                                                <div class="modal-footer">
+                                                    <!--<button type="submit" class="btn btn-danger">Yes</button>-->
+                                                    <!--<a asp-action="DeleteComment" asp-route-id="comment.Id" class="btn btn-danger">Delete</a>-->
+                                                    <button type="submit" class="btn btn-danger">Yes</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p>
+                            
+                        }
                     </div>
                 </div>
         }

@@ -17,11 +17,13 @@ namespace LevelEditorWebApp.Controllers {
         private readonly ApplicationDbContext _context;
         private readonly IVoteService _voteService;
         private readonly IDownloadStatsService _downloadStatsService;
+        private readonly ICommentService _commentService;
 
-        public PostsController(ApplicationDbContext context, IVoteService voteService, IDownloadStatsService downloadStatsService) {
+        public PostsController(ApplicationDbContext context, IVoteService voteService, IDownloadStatsService downloadStatsService, ICommentService commentService) {
             _context = context;
             _voteService = voteService;
             _downloadStatsService = downloadStatsService;
+            _commentService = commentService;
         }
 
         // GET: Posts
@@ -337,20 +339,51 @@ namespace LevelEditorWebApp.Controllers {
             comment.PostId = int.Parse(Request.Form["PostId"]);
             comment.UserId = _context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault().Id;
 
-
-            if (CommentIsValid(comment)) {
-                _context.Add(comment);
-                await _context.SaveChangesAsync();
+            if (_commentService.CommentIsValid(comment)) {
+                await _commentService.CreateComment(comment);
                 return RedirectToAction(nameof(Details), new { id = comment.PostId });
             }
+
             return RedirectToAction(nameof(Details), new { id = comment.PostId });
         }
 
-        private bool CommentIsValid(Comment comment) {
-            //check if all comment fields are valid
-            return comment.Content is not null && comment.Content is not "" && 
-                   comment.Username is not "" && comment.Username is not null &&
-                   comment.UserId is not "" && comment.UserId is not null;
+        //edit comment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> EditComment([Bind("Id,Content")] Comment comment) {
+            comment.CreatedAt = DateTime.Now;
+            comment.Username = User.Identity.Name;
+            comment.Content = Request.Form["Content"].ToString().Trim();
+            comment.PostId = int.Parse(Request.Form["PostId"]);
+            comment.UserId = _context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault().Id;
+
+            if (_commentService.CommentIsValid(comment)) {
+                await _commentService.UpdateComment(comment);
+                return RedirectToAction(nameof(Details), new { id = comment.PostId });
+            }
+
+            return RedirectToAction(nameof(Details), new { id = comment.PostId });
+        }
+
+        //delete comment
+        // POST: Posts/DeleteComment/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> DeleteUserComment() {
+            int commentId = int.Parse(Request.Form["CommentId"]);
+            int postId = int.Parse(Request.Form["PostId"]);
+            Comment comment = await _commentService.GetCommentById(commentId);
+
+            if(User.Identity.Name != comment.Username) {
+                return Unauthorized();
+            }
+
+            await _commentService.DeleteComment(commentId);
+
+
+            return RedirectToAction(nameof(Details), new { id = postId });
         }
 
         //add vote to post
