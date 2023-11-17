@@ -9,7 +9,7 @@
 </div>
 @if(ViewData["FiveNewestPosts"] != null) {
         <h2 class="text-center display-5">Recently updated posts</h2>
-        <div class="card-group">
+        <div class="card-group"  data-bs-theme="dark">
         <!-- display link toward each of the posts in ViewData["FiveNewestPosts"] -->
         @foreach (var post in ViewData["FiveNewestPosts"] as Post[])
         {
@@ -17,7 +17,7 @@
                     <div class="card card-most-recent-posts h-100"  style="width: 16rem;">
                     <!-- Link towards post by post Id -->
                     <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.PostId" class="text-decoration-none">
-                        <div class="card-body text-decoration-none text-dark">
+                        <div class="card-body text-decoration-none text-light">
                             <h5 class="card-title">@post.Title</h5>
                             <p class="card-text"><b>Posted by:</b> @post.Author</p>
                         </div>
@@ -33,14 +33,14 @@
 
         @if (ViewData["FiveBestAllTimePosts"] != null) {
                 <h2 class="text-center display-5 mt-5">Best Rated Posts</h2>
-                <div class="card-group">
+                <div class="card-group" data-bs-theme="dark">
                 <!-- display link toward each of the posts in ViewData["FiveNewestPosts"] -->
                 @foreach (var post in ViewData["FiveBestAllTimePosts"] as Post[]) {
-                        <div class="">
+                        <div class="" >
                                 <div class="card card-most-recent-posts h-100"  style="width: 16rem;">
                                 <!-- Link towards post by post Id -->
                                 <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.PostId" class="text-decoration-none">
-                                    <div class="card-body text-decoration-none text-dark">
+                                        <div class="card-body text-decoration-none text-light">
                                         <h5 class="card-title">@post.Title</h5>
                                         <p class="card-text"><b>Posted by:</b> @post.Author</p>
                                     </div>
@@ -56,14 +56,14 @@
 
 @if (ViewData["FiveBestAllTimePosts"] != null) {
         <h2 class="text-center display-5 mt-5">Most Downloaded Projects</h2>
-        <div class="card-group">
+        <div class="card-group"  data-bs-theme="dark">
         <!-- display link toward each of the posts in ViewData["FiveNewestPosts"] -->
         @foreach (var post in ViewData["FiveMostDownloadedPosts"] as Post[]) {
                     <div class="">
                             <div class="card card-most-recent-posts h-100"  style="width: 16rem;">
                             <!-- Link towards post by post Id -->
                             <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.PostId" class="text-decoration-none">
-                                <div class="card-body text-decoration-none text-dark">
+                                <div class="card-body text-decoration-none text-light">
                                     <h5 class="card-title">@post.Title</h5>
                                     <p class="card-text"><b>Posted by:</b> @post.Author</p>
                                 </div>
