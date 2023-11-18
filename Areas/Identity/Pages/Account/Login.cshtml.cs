@@ -106,7 +106,9 @@ namespace LevelEditorWebApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            //get asp-route-redirectUri from query string
+            returnUrl = Request.Query["redirectUri"].ToString();
+            //returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
