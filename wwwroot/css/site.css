@@ -27,3 +27,7 @@ body {
     transition: 0.3s;
     z-index: 3;
 }
+
+.doom-header {
+    font-family: 'Doom 2016 Left', sans-serif;
+}

@@ -5,7 +5,21 @@
 @inject IPostsService postsService
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-1 doom-header">Vårt-Demonium</h1>
+    <div class="lead fs-2 mb-3"> <!-- fs == font size-->
+        Welcome to Vårt-Demonium! <br />
+        You can find all the latest news and updates about the PANDEMONIUM game here.
+    </div>
+</div>
+<div class="fs-5 mb-4">
+    <p>
+        To download the game or start creating levels, you can read the 
+        <a asp-controller="Home" asp-action="GettingStarted" class="text-danger text-decoration-none">Getting Started</a> guide.
+    </p>
+    <p>
+        For a collection of all users posts, you can visit the <a asp-controller="Posts" asp-action="Index" class="text-danger text-decoration-none">Posts</a> 
+        page or use the search bar in the navigation bar.
+    </p>
 </div>
 @if(ViewData["FiveNewestPosts"] != null) {
         <h2 class="text-center display-5">Recently updated posts</h2>
