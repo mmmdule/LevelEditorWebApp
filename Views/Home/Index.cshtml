@@ -20,6 +20,9 @@
         For a collection of all users posts, you can visit the <a asp-controller="Posts" asp-action="Index" class="text-danger text-decoration-none">Posts</a> 
         page or use the search bar in the navigation bar.
     </p>
+    <p>
+        To create a new post, you can click the <a asp-controller="Posts" asp-action="Create" class="text-danger text-decoration-none">Create New</a> link.
+    </p>
 </div>
 @if(ViewData["FiveNewestPosts"] != null) {
         <h2 class="text-center display-5">Recently updated posts</h2>

@@ -31,3 +31,12 @@ body {
 .doom-header {
     font-family: 'Doom 2016 Left', sans-serif;
 }
+
+.posts-index-item:hover {
+    background-color: #80808030;
+    transition: 0.55s;
+}
+
+.posts-index-item {
+    transition: 0.55s;
+}

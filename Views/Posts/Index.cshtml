@@ -7,36 +7,20 @@
 <h1>All Posts</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="link-danger fs-5 link-underline-opacity-0">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                Last Updated At
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-               <a asp-action="Details" asp-route-id="@item.PostId">@Html.DisplayFor(modelItem => item.Title)</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+    <ol class="list-group list-group-numbered text-start">
+    <!-- "post-index-item" class added to list items for css -->
+    @foreach (var item in Model) {
+        <a asp-action="Details" asp-route-id="@item.PostId"
+            class="link-underline-opacity-0 link-light">
+                <li class="list-group-item posts-index-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">@Html.DisplayFor(modelItem => item.Title)</div>
+                    Post by: @Html.DisplayFor(modelItem => item.Author)
+                </div>
+            </li>
+        </a>
+    }
+</ol>
