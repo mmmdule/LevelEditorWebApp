@@ -26,12 +26,29 @@ namespace LevelEditorWebApp.Controllers {
             _commentService = commentService;
         }
 
-        // GET: Posts
-        public async Task<IActionResult> Index() {
-            return _context.Post != null ?
-                        View(await _context.Post.ToListAsync()) :
-                        Problem("Entity set 'ApplicationDbContext.Post'  is null.");
+        // GET: Posts/i=0
+        //get i from asp-route-i
+        public async Task<IActionResult> Index(int? i) {
+            int postsPerPage = 2;
+
+            ViewData["PostsPerPage"] = postsPerPage;
+            ViewData["PostCount"] = _context.Post.Count();
+            ViewData["i"] = i;
+
+            int index;
+            try { //check if "i" is a valid number
+                  index = int.Parse(i.ToString());
+            }
+            catch {
+                return NotFound();
+            }
+
+            ViewData["CurrentPageNumber"] = i / postsPerPage + 1;
+
+            //return posts with index from i to i + postsPerPage
+            return View(await _context.Post.OrderByDescending(p => p.CreatedAt).Skip(i.GetValueOrDefault()).Take(postsPerPage).ToListAsync());
         }
+
 
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id) {

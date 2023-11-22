@@ -10,7 +10,7 @@
     <a asp-action="Create" class="link-danger fs-5 link-underline-opacity-0">Create New</a>
 </p>
 
-    <ol class="list-group list-group-numbered text-start">
+<ol class="list-group list-group-numbered text-start">
     <!-- "post-index-item" class added to list items for css -->
     @foreach (var item in Model) {
         <a asp-action="Details" asp-route-id="@item.PostId"
@@ -24,3 +24,39 @@
         </a>
     }
 </ol>
+
+<nav aria-label="...">
+  <ul class="pagination mt-5">
+    @{
+        string disabledPrev = (int)ViewData["CurrentPageNumber"] == 1 ? "disabled" : "";
+
+        int postsPerPage = (int)ViewData["PostsPerPage"];
+        int moduo = (int)ViewData["PostCount"] % postsPerPage;
+        int pageCount = (int)ViewData["PostCount"] / postsPerPage + moduo;
+
+        int currentRequestIndex = (int)ViewData["i"];
+        int prevPageNumber = currentRequestIndex - postsPerPage;
+        int nextPageNumber = currentRequestIndex + postsPerPage;
+    }
+    <li class="page-item @disabledPrev" id="prevPage">
+      <a class="page-link" asp-area="" asp-route-i="@(prevPageNumber)" asp-controller="Posts" asp-action="Index">Previous</a>
+    </li>
+    @for(int i = 0; i < pageCount; i++) {
+        string active = i + 1 == (int)ViewData["CurrentPageNumber"] ? "active" : "";
+        <li class="page-item @active">
+            <a class="page-link" asp-area="" asp-route-i="@(i*postsPerPage)" asp-controller="Posts" asp-action="Index">@(i + 1)</a>
+        </li>
+    }
+    @{
+        string disabledNext = (int)ViewData["CurrentPageNumber"] == pageCount ? "disabled" : "";
+    }
+    <li class="page-item @disabledNext" id="nextPage">
+      <a class="page-link" asp-area="" asp-route-i="@(nextPageNumber)" asp-controller="Posts" asp-action="Index">Next</a>
+    </li>
+  </ul>
+</nav>
+
+<script>
+
+
+</script>
