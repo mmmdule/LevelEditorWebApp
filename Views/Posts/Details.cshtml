@@ -107,7 +107,7 @@
         @Html.ActionLink("Edit", "Edit", new { id = Model.PostId }); @: |
         @Html.ActionLink("Delete", "Delete", new { id = Model.PostId }); @: |
     }
-    <a asp-action="Index"> Back to List</a>
+    <a asp-area="" asp-route-i="0" asp-controller="Posts" asp-action="Index"> Back to List</a>
 </div>
 
 <div class="mt-5 mb-5">

@@ -108,7 +108,8 @@ namespace LevelEditorWebApp.Controllers {
                 //create zip file in wwwroot/uploads
                 System.IO.File.WriteAllBytes("wwwroot/uploads/" + post.PostId + post.ZipFileName, post.ZipFile);
 
-                return RedirectToAction(nameof(Index));
+                //i param is 0 because Index needs index for pagination
+                return RedirectToAction(nameof(Index), new { i = 0 });
             }
             return View(post);
         }
