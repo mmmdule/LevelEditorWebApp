@@ -189,7 +189,8 @@ namespace LevelEditorWebApp.Controllers {
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //i param is 0 because Index needs index for pagination
+                return RedirectToAction(nameof(Index), new { i = 0 });
             }
             return View(post);
         }
@@ -234,7 +235,8 @@ namespace LevelEditorWebApp.Controllers {
 
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //i param is 0 because Index needs index for pagination
+            return RedirectToAction(nameof(Index), new { i = 0 });
         }
 
         private bool PostExists(int id) {
@@ -343,6 +345,11 @@ namespace LevelEditorWebApp.Controllers {
         //check if user is author of post
         private bool IsAuthorOfPost(int? id) {
             var post = _context.Post.Find(id);
+
+            if (post == null) {
+                return false;
+            }
+
             return post.Author == User.Identity.Name;
         }
 

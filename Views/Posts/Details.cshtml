@@ -92,6 +92,9 @@
             <p class="border-bottom">
                 <span class="fw-bold">Last updated at: </span>@Model.CreatedAt.Value.ToString("dd/MM/yyyy")
             </p>
+            <p class="border-bottom">
+                <span class="fw-bold">File name: </span>@Model.ZipFileName
+            </p>
             <p class="">
                 @{
                     double size = Model.ZipFile.Length / 1024;
@@ -100,7 +103,7 @@
             </p>
             <a asp-action="Download" asp-route-id="@Model?.PostId">
                 <button class="btn btn-warning w-100 p-2">
-                    <i class="fa-sharp fa-solid fa-download" style="color: #000000;"></i> Download this file
+                    <i class="fa-sharp fa-solid fa-download"></i> Download this file
                 </button>
             </a>
             @if (Context.User.Identity.Name is not null && Context.User.Identity.Name.Equals(Model.Author)) {
@@ -201,7 +204,7 @@
     }
 </div>
 
-<!-- DELETE Modal -->
+<!-- DELETE Comment Modal -->
     <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -252,6 +255,8 @@
     </div>
   </div>
 </div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
