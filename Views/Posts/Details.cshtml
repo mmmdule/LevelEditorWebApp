@@ -174,7 +174,11 @@
                     <div class="card-body">
                         <h5 class="card-title">@comment.Username</h5>
                         <p class="card-text">@comment.Content</p>
-                        <p class="card-text"><small class="text-muted">@comment.CreatedAt</small></p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                @comment.CreatedAt.ToString("dd/MM/yy HH:mm")
+                            </small>
+                        </p>
                         @if (Context.User.Identity.Name is not null && Context.User.Identity.Name.Equals(comment.Username)) {
 
                             <p class="card-footer">
