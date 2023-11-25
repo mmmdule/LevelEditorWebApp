@@ -3,49 +3,56 @@
 @{
     ViewData["Title"] = "Delete";
 }
+<div class="mb-3">
+    <a asp-area="" asp-route-i="0" asp-controller="Posts" asp-action="Index"
+       class="link-secondary text-decoration-none lead fw-bold"> 
+       <i class="fa-solid fa-chevron-left"></i> Back to List
+    </a>
+</div>
+<h1>Confirm Action</h1>
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Post</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Author)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Author)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZipFileName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZipFileName)
-        </dd>
-    </dl>
+<h3>Are you sure you want to delete this post?</h3>
+<div class="w-75">
+    <ol class="list-group list-group mb-4">
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Title:</div>
+          @Model?.Title
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Description:</div>
+                @Model?.Body
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">Last updated at:</div>
+                @Model?.CreatedAt.Value.ToString("dd/MM/yyyy")
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">File Name:</div>
+                @Model?.ZipFileName
+        </div>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="ms-2 me-auto">
+          <div class="fw-bold">File Size:</div>
+                @{
+                    double size = @Model.ZipFile.Length / 1024;
+                }
+                @size KB
+        </div>
+      </li>
+    </ol>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="PostId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <button type="submit" class="btn btn-danger" />
+            <i class="fa-solid fa-trash"></i> Delete post    
+        </button>
     </form>
 </div>
