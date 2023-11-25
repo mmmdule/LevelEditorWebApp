@@ -5,11 +5,28 @@
 @inject IPostsService postsService
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-1 doom-header">Vårt-Demonium</h1>
+    <div class="lead fs-2 mb-3"> <!-- fs == font size-->
+        Welcome to Vårt-Demonium! <br />
+        You can find all the latest news and updates about the PANDEMONIUM game here.
+    </div>
+</div>
+<div class="fs-5 mb-4">
+    <p>
+        To download the game or start creating levels, you can read the 
+        <a asp-controller="Home" asp-action="GettingStarted" class="text-danger text-decoration-none">Getting Started</a> guide.
+    </p>
+    <p>
+        For a collection of all users posts, you can visit the <a asp-controller="Posts" asp-route-i="0" asp-action="Index" class="text-danger text-decoration-none">Posts</a> 
+        page or use the search bar in the navigation bar.
+    </p>
+    <p>
+        To create a new post, you can click the <a asp-controller="Posts" asp-action="Create" class="text-danger text-decoration-none">Create New</a> link.
+    </p>
 </div>
 @if(ViewData["FiveNewestPosts"] != null) {
         <h2 class="text-center display-5">Recently updated posts</h2>
-        <div class="card-group">
+        <div class="card-group"  data-bs-theme="dark">
         <!-- display link toward each of the posts in ViewData["FiveNewestPosts"] -->
         @foreach (var post in ViewData["FiveNewestPosts"] as Post[])
         {
@@ -17,7 +34,7 @@
                     <div class="card card-most-recent-posts h-100"  style="width: 16rem;">
                     <!-- Link towards post by post Id -->
                     <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.PostId" class="text-decoration-none">
-                        <div class="card-body text-decoration-none text-dark">
+                        <div class="card-body text-decoration-none text-light">
                             <h5 class="card-title">@post.Title</h5>
                             <p class="card-text"><b>Posted by:</b> @post.Author</p>
                         </div>
@@ -33,14 +50,14 @@
 
         @if (ViewData["FiveBestAllTimePosts"] != null) {
                 <h2 class="text-center display-5 mt-5">Best Rated Posts</h2>
-                <div class="card-group">
+                <div class="card-group" data-bs-theme="dark">
                 <!-- display link toward each of the posts in ViewData["FiveNewestPosts"] -->
                 @foreach (var post in ViewData["FiveBestAllTimePosts"] as Post[]) {
-                        <div class="">
+                        <div class="" >
                                 <div class="card card-most-recent-posts h-100"  style="width: 16rem;">
                                 <!-- Link towards post by post Id -->
                                 <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.PostId" class="text-decoration-none">
-                                    <div class="card-body text-decoration-none text-dark">
+                                        <div class="card-body text-decoration-none text-light">
                                         <h5 class="card-title">@post.Title</h5>
                                         <p class="card-text"><b>Posted by:</b> @post.Author</p>
                                     </div>
@@ -56,14 +73,14 @@
 
 @if (ViewData["FiveBestAllTimePosts"] != null) {
         <h2 class="text-center display-5 mt-5">Most Downloaded Projects</h2>
-        <div class="card-group">
+        <div class="card-group"  data-bs-theme="dark">
         <!-- display link toward each of the posts in ViewData["FiveNewestPosts"] -->
         @foreach (var post in ViewData["FiveMostDownloadedPosts"] as Post[]) {
                     <div class="">
                             <div class="card card-most-recent-posts h-100"  style="width: 16rem;">
                             <!-- Link towards post by post Id -->
                             <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.PostId" class="text-decoration-none">
-                                <div class="card-body text-decoration-none text-dark">
+                                <div class="card-body text-decoration-none text-light">
                                     <h5 class="card-title">@post.Title</h5>
                                     <p class="card-text"><b>Posted by:</b> @post.Author</p>
                                 </div>

@@ -106,7 +106,11 @@ namespace LevelEditorWebApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            //get asp-route-redirectUri from query string
+            if(CameFromPostDetailsOrCreate(Request.Query["redirectUri"].ToString()))
+                returnUrl = Request.Query["redirectUri"].ToString();
+            else
+                returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -138,6 +142,20 @@ namespace LevelEditorWebApp.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private bool CameFromPostDetailsOrCreate(string returnUrl) {
+            if(returnUrl == "/Posts/Create")
+                return true;
+
+            string[] array = returnUrl.Split('/');
+            if (array.Length != 4)
+                return false;
+
+            if (array[1] is not "Posts" || array[2] is not "Details")
+                return false;
+
+            return int.TryParse(array[3], out int result);
         }
     }
 }
