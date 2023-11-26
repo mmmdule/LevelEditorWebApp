@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - darkTheme
+    - master
 env:
   AZURE_WEBAPP_NAME: LevelEditorWebApp20231125142635
   AZURE_WEBAPP_PACKAGE_PATH: .\published
