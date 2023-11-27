@@ -28,7 +28,7 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 
 //add data context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString).LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information));
 
 builder.Services.Configure<IdentityOptions>(options => {
     // Password settings.
