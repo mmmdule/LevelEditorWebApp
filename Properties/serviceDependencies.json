@@ -9,6 +9,11 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:no_google_auth_db",
       "dynamicId": null
+    },
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": "VaultUri",
+      "dynamicId": null
     }
   }
 }
