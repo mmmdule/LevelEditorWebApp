@@ -13,6 +13,7 @@
       "type": "secrets.keyVault",
       "connectionId": "VaultUri",
       "dynamicId": null
+      "connectionId": "ConnectionStrings:no_google_auth_db"
     }
   }
 }
