@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/leveleditorwebappdbserver/databases/LevelEditorWebApp_db_no_g",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:no_google_auth_db"
+    }
+  }
+}
