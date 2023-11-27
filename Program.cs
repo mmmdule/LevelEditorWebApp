@@ -11,7 +11,7 @@ var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
 builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration["ConnectionStrings:no_google_auth_db"];//builder.Configuration.GetConnectionString("DefaultConnection");
 //builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //    options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
