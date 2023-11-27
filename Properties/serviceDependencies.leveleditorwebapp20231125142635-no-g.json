@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "mssql2": {
-      "secretStore": "AzureAppSettings",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/leveleditorwebappdbserver/databases/LevelEditorWebApp_db_no_g",
-      "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:no_google_auth_db"
-    },
     "secrets1": {
       "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/LevelEditorWebApp20231125142635/slots/no-g/providers/Microsoft.ServiceLinker/linkers/VaultUri_11CF7E2791",
       "secretStore": "AzureAppSettings",
@@ -13,6 +7,11 @@
       "type": "secrets.keyVault",
       "connectionId": "VaultUri",
       "dynamicId": null
+    },
+    "mssql2": {
+      "secretStore": "AzureKeyVault",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/leveleditorwebappdbserver/databases/LevelEditorWebApp_db_no_g",
+      "type": "mssql.azure",
       "connectionId": "ConnectionStrings:no_google_auth_db"
     }
   }
