@@ -4,6 +4,11 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:DefaultConnection",
       "dynamicId": null
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:no_google_auth_db",
+      "dynamicId": null
     }
   }
 }
