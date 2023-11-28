@@ -7,7 +7,6 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "VaultUri": "https://leveleditorwebappvault.vault.azure.net/",
         "AZURE_USERNAME": "dusan.v.terzic@gmail.com",
-        "AZURE_SQL_CONNECTIONSTRING": "Server=tcp:leveleditorwebappdbserver.database.windows.net,1433;Initial Catalog=LevelEditorWebApp_db_no_g;Persist Security Info=False;User ID=doomshan;Password=MF!d00m#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7032;http://localhost:5186"
