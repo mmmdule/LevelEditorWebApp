@@ -11,9 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());
 
 // Add services to the container.
-var connectionString = builder.Configuration["ConnectionStrings:no_google_auth_db"];//builder.Configuration.GetConnectionString("DefaultConnection");
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseSqlServer(connectionString));
+var connectionString = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");//builder.Configuration.GetConnectionString("ConnectionStrings:no_google_auth_db"");
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
