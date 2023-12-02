@@ -29,7 +29,7 @@ namespace LevelEditorWebApp.Controllers {
         // GET: Posts/i=0
         //get i from asp-route-i
         public async Task<IActionResult> Index(int? i) {
-            int postsPerPage = 2;
+            int postsPerPage = Environment.GetEnvironmentVariable("PAGINATION_COUNT_PER_PAGE") != null ? int.Parse(Environment.GetEnvironmentVariable("PAGINATION_COUNT_PER_PAGE")) : 10;
 
             ViewData["PostsPerPage"] = postsPerPage;
             ViewData["PostCount"] = _context.Post.Count();
